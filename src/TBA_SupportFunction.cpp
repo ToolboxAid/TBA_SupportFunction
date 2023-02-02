@@ -10,6 +10,34 @@
 #include "TBA_SupportFunction.h"
 
 TBA_SupportFunction::TBA_SupportFunction() {
+  this->lastHeap = getHeapSize();
+  this->lastFreeHeap = getFreeHeap();
+  this->lastMinFreeHeap = getMinFreeHeap();
+  this->lastMaxAllocHeap = getMaxAllocHeap();
+  
+  uint64_t thisSize = getHeapSize();
+  String sizeVal = humanReadableSize( thisSize );
+  String diffVal = humanReadableSize( (int64_t)(this->lastHeap - thisSize) );
+  Serial.printf("HEAP Size    : %s diff: %s\n", sizeVal, diffVal);
+  this->lastHeap = thisSize;
+
+  thisSize = getFreeHeap();
+  sizeVal = humanReadableSize( thisSize );
+  diffVal = humanReadableSize( (int64_t)(this->lastFreeHeap - thisSize) );
+  Serial.printf("HEAP Free    : %s diff: %s\n", sizeVal, diffVal);
+  this->lastFreeHeap = thisSize;
+
+  thisSize = getMinFreeHeap();
+  sizeVal = humanReadableSize( thisSize );
+  diffVal = humanReadableSize( (int64_t)(this->lastMinFreeHeap - thisSize) );
+  Serial.printf("HEAP Min Free: %s diff: %s\n", sizeVal, diffVal);
+  this->lastMinFreeHeap = thisSize;
+
+  thisSize = getMaxAllocHeap();
+  sizeVal = humanReadableSize( thisSize );
+  diffVal = humanReadableSize( (int64_t)(this->lastMaxAllocHeap - thisSize));
+  Serial.printf("HEAP Max Allo: %s diff: %s\n", sizeVal, diffVal);
+  this->lastMaxAllocHeap = thisSize;  
 }
 
 String TBA_SupportFunction::humanReadableSize(int64_t bytes) {
@@ -20,8 +48,7 @@ String TBA_SupportFunction::humanReadableSize(int64_t bytes) {
     sign = -1;
     bytes *= sign;
   }
-
-
+  
   char buf[12];
   int bufSize = sizeof(buf) / sizeof(char);
   memset(buf, 0, sizeof(buf));
