@@ -146,9 +146,8 @@ String TBA_SupportFunction::convertToString(char *buff, int sizeOf)
   }
   return rtnString;
 }
-- +
 
-    uint64_t TBA_SupportFunction::getHeapSize()
+uint64_t TBA_SupportFunction::getHeapSize()
 {
   return (uint64_t)ESP.getHeapSize();
 }

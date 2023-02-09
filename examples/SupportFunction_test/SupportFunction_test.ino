@@ -55,8 +55,10 @@ void setup() {
 
 
 // not tested (only compiled)
-  char str[]="1776ad";
-  String stg = supportFunction.convertToString(str,sizeof(str));
+  //char str[]="1776ad";
+  char str[] = {'1','7','7','6',' ','A','D'};
+  String tempString = supportFunction.convertToString(str,sizeof(str));
+  Serial.println(tempString);
 
   Serial.println("Done." );
 }
