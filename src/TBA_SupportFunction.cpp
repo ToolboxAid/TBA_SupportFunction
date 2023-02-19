@@ -18,27 +18,29 @@ TBA_SupportFunction::TBA_SupportFunction()
 
   uint64_t thisSize = getHeapSize();
   String sizeVal = humanReadableSize(thisSize);
-  String diffVal = humanReadableSize((int64_t)(this->lastHeap - thisSize));
+  String diffVal = humanReadableSize((int64_t)((int64_t)thisSize - (int64_t)this->lastHeap));
   Serial.printf("HEAP Size    : %s diff: %s\n", sizeVal, diffVal);
   this->lastHeap = thisSize;
 
   thisSize = getFreeHeap();
   sizeVal = humanReadableSize(thisSize);
-  diffVal = humanReadableSize((int64_t)(this->lastFreeHeap - thisSize));
+  diffVal = humanReadableSize((int64_t)(thisSize - this->lastFreeHeap));
   Serial.printf("HEAP Free    : %s diff: %s\n", sizeVal, diffVal);
   this->lastFreeHeap = thisSize;
 
   thisSize = getMinFreeHeap();
   sizeVal = humanReadableSize(thisSize);
-  diffVal = humanReadableSize((int64_t)(this->lastMinFreeHeap - thisSize));
+  diffVal = humanReadableSize((int64_t)(thisSize - this->lastMinFreeHeap));
   Serial.printf("HEAP Min Free: %s diff: %s\n", sizeVal, diffVal);
   this->lastMinFreeHeap = thisSize;
 
   thisSize = getMaxAllocHeap();
   sizeVal = humanReadableSize(thisSize);
-  diffVal = humanReadableSize((int64_t)(this->lastMaxAllocHeap - thisSize));
+  diffVal = humanReadableSize((int64_t)(thisSize - this->lastMaxAllocHeap));
   Serial.printf("HEAP Max Allo: %s diff: %s\n", sizeVal, diffVal);
   this->lastMaxAllocHeap = thisSize;
+
+
 }
 
 String TBA_SupportFunction::humanReadableSize(int64_t bytes)
@@ -166,6 +168,8 @@ uint64_t TBA_SupportFunction::getMaxAllocHeap()
 
 void TBA_SupportFunction::memoryInfo()
 {
+  Serial.println();
+  
   uint64_t thisSize = getHeapSize();
   String sizeVal = humanReadableSize(thisSize);
   String diffVal = humanReadableSize((int64_t)(this->lastHeap - thisSize));
