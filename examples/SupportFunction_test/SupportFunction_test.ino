@@ -11,6 +11,8 @@
  * 6 - verboseln LOG_LEVEL_VERBOSE    all
  */
 
+#include "RandomMemoryPig.h"
+
 #include "TBA_SupportFunction.h"
 TBA_SupportFunction supportFunction = TBA_SupportFunction();
 
@@ -40,11 +42,6 @@ void setup()
 
   Serial.println();
 
-  Serial.println("*** HEAP Size    : 360.469 KB diff:  32 B  -- s/b neg");
-  Serial.println("*** HEAP Free    : 336.102 KB diff: -4.867 KB -- s/b pos");
-  Serial.println("*** HEAP Min Free: 330.738 KB diff:   0 B");
-  Serial.println("*** HEAP Max Allo: 117.988 KB diff:   0 B");
-
   supportFunction.memoryInfo();
 
   Serial.println("- - - - - - - - - - - - - - - - - - - - -");
@@ -63,7 +60,6 @@ void setup()
 
   setupCPU();
 
-  // not tested (only compiled)
   // char str[]="1776ad";
   char str[] = {'1', '7', '7', '6', ' ', 'A', 'D'};
   String tempString = supportFunction.convertToString(str, sizeof(str));
@@ -74,26 +70,48 @@ void setup()
   Serial.println("Setup complete.\n\n");
 }
 
-int maxCnt = 10;
-int sendCnt = maxCnt - 1;
+int cnt = 0;
 
 void loop()
 {
-  sendCnt++;
-  if (sendCnt >= maxCnt)
-  {
-    sendCnt = 0;
+  // intro
+  Serial.println("========================================");
+  Serial.println("========================================");
+  Serial.println("========================================");
+  Serial.print("Loop cnt: ");
+  Serial.println(cnt++);
 
-    // consume some space...
-    //char *nameBuffer = 
-    int num = random(100,5000);
-    Serial.println(num);
-    (char *)malloc(num);
+  Serial.println("");
+  Serial.println("(-) negative number indicates memory allocated");
+  Serial.println("(+) positive number indicates memory delete/free");
+  Serial.println("");
 
-    supportFunction.memoryInfo();
-    Serial.println();
-  }
+  // base state
+  Serial.println("----------------------------------------");
+  Serial.println("");
+  Serial.println("Pre allocate usage S/B  0 byte difference");
+  supportFunction.memoryInfo();
+  Serial.println();
 
-  delay(100);
+  // allocate state
+  Serial.println("----------------------------------------");
+  Serial.println("Post allocated usage");
+  RandomMemoryPig *randomMemoryPig = new RandomMemoryPig();
+  supportFunction.memoryInfo();
+  Serial.println();
+  Serial.print("Memory allocate size: ");
+  Serial.println(randomMemoryPig->getAllocationSize());
+  Serial.print("Human readable size : ");
+  Serial.println(supportFunction.humanReadableSize(randomMemoryPig->getAllocationSize()));
+  Serial.println();
+
+  // free/delete state
+  Serial.println("----------------------------------------");
+  Serial.println("Post free/delete memory usage, s/b positive of allocated usage");
+  delete (randomMemoryPig);
+  supportFunction.memoryInfo();
+  Serial.println();
+
+  delay(5000);
   yield();
 }

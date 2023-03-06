@@ -9,31 +9,28 @@
 #ifndef TBA_SupportFunction_h
 #define TBA_SupportFunction_h
 
-  #include "Arduino.h"
-  
-  class TBA_SupportFunction{
-    private:
+#include "Arduino.h"
 
-      uint64_t lastHeap;
-      uint64_t lastFreeHeap;
-      uint64_t lastMinFreeHeap;
-      uint64_t lastMaxAllocHeap;
+class TBA_SupportFunction
+{
+private:
+  int64_t lastHeap;
+  int64_t lastFreeHeap;
+  int64_t lastMinFreeHeap;
+  int64_t lastMaxAllocHeap;
 
-    public:
-      TBA_SupportFunction();
-      String convertToString(char* buff, int size);
-      String humanReadableSize(uint64_t bytes);
-      String humanReadableSize(int64_t bytes);
-      uint64_t getHeapSize();
-      uint64_t getFreeHeap();
-      uint64_t getMinFreeHeap();
-      uint64_t getMaxAllocHeap();
-      void memoryInfo();    
-      void showChipID();
-      void   initTBA_SupportFunction();
+protected:
+public:
+  TBA_SupportFunction();
+  String convertToString(char *buff, int size);
+  String humanReadableSize(int64_t bytes);
+  int64_t getHeapSize();
+  int64_t getFreeHeap();
+  int64_t getMinFreeHeap();
+  int64_t getMaxAllocHeap();
+  void memoryInfo();
+  void showChipID();
+  void initTBA_SupportFunction();
+};
 
-    private:
-
-  };
-
-#endif  // end TBA_SupportFunction_h
+#endif // end TBA_SupportFunction_h
